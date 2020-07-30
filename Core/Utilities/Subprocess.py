@@ -414,7 +414,7 @@ class Subprocess(object):
       return self.__generateSystemCommandError(exitStatus,
                                                "%s for '%s' call" % (retDict['Message'], self.cmdSeq))
 
-  def systemCall(self, cmdSeq, callbackFunction=None, shell=False, env=None):
+  def systemCall(self, cmdSeq, prmon=False, callbackFunction=None, shell=False, env=None):
     """ system call (no shell) - execute :cmdSeq: """
 
     if shell:
@@ -437,6 +437,10 @@ class Subprocess(object):
                                     env=env,
                                     universal_newlines=True)
       self.childPID = self.child.pid
+      if prmon:
+        fileName = './prmon_Gauss.json'
+        cmdPrmon = '/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/prmon/current/bin/prmon --pid %s --json-summary %s' % (str(self.childPID), fileName)  # noqa
+        exe = subprocess.Popen(shlex.split(cmdPrmon))
     except OSError as v:
       retDict = S_ERROR(v)
       retDict['Value'] = (-1, '', str(v))

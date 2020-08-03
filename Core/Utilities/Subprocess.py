@@ -37,6 +37,7 @@ import sys
 import subprocess32 as subprocess
 import signal
 import psutil
+import shlex
 
 # Very Important:
 #  Here we can not import directly from DIRAC, since this file it is imported
